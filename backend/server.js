@@ -68,8 +68,7 @@ app.use(mongoSanitize());
 // mongodb connection
 mongoose
   .connect(
-    // `mongodb://mongodatabase:27017/mern`,
-    `mongodb://localhost:27017/mern`,
+    `mongodb://${process.env.HOST}:${process.env.PORT}/${process.env.DATABASE}`,
     {
       useCreateIndex: true,
       useNewUrlParser: true,

@@ -1,13 +1,3 @@
-.container {
-  overflow-y: auto;
-  height: 100vh;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 1440px;
-}
-
 .feed {
   display: inline-flex;
   flex-direction: column;
@@ -43,9 +33,7 @@ h1 {
   font-size: 50px;
   font-style: normal;
   font-weight: 600;
-  // line-height: 122%;
   margin: 0;
-  /* 61px */
 }
 
 .primary-paragraph {
@@ -55,7 +43,6 @@ h1 {
   font-style: normal;
   font-weight: 400;
   line-height: 122%;
-  /* 21.96px */
 }
 
 .pages {
@@ -63,7 +50,6 @@ h1 {
   flex-direction: column;
   align-items: center;
   gap: 32px;
-  // width: 760px;
 }
 
 .search-bar {
@@ -74,24 +60,7 @@ h1 {
   align-self: stretch;
 }
 
-button {
-  display: flex;
-  padding: 10px 50px;
-  align-items: flex-end;
-  gap: 10px;
-  align-self: stretch;
-  border-radius: 30px;
-  background: #2D6FF6;
-  color: var(--White-Text, #FFF);
-  font-family: 'Lato', sans-serif;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  border-width: 0;
-}
-
-.here {
+.close-sharp {
   display: flex;
   // justify-content: center;
   align-items: center;
@@ -100,7 +69,7 @@ button {
   margin-right: 3px;
 }
 
-.pika {
+.fiber-manual-record {
   display: flex;
   align-items: center;
   fill: #D9D9D9;
