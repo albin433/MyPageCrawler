@@ -1,0 +1,35 @@
+version: '3.7'
+services:
+  backend:
+    build:
+      dockerfile: ./Dockerfile
+    image: entail/backend
+    container_name: backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - entail:/entail/backend
+    networks:
+      - backend-net
+
+  mongodatabase:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: mern
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - backend-net
+
+networks:
+  backend-net:
+    driver: bridge
+
+volumes:
+  entail: null
+  mongodb_data: null
