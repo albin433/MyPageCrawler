@@ -1,13 +1,13 @@
 import React from 'react';
 import './Home.scss';
-import agent from "../../agent/agent";
 import { Container, Button, Input, FormControl, CircularProgress, Backdrop } from '@material-ui/core';
 import { FiberManualRecord } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
-import Pagination from './home-components/home-pagination';
+import agent from "../../agent/agent";
 import CustomTooltip from './home-components/element-tooltip';
-import ItemHeaderSide from './home-components/item-header-side';
 import ErrorModal from './home-components/error-modal';
+import ItemHeaderSide from './home-components/item-header-side';
+import Pagination from './home-components/home-pagination';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,25 +54,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const [anchorElArray, setAnchorElArray] = React.useState([]);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [displayedPages, setDisplayedPages] = React.useState([]);
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const [errorModalOpen, setErrorModalOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [pages, setPages] = React.useState([]);
-  const [displayedPages, setDisplayedPages] = React.useState([]);
   const [url, setUrl] = React.useState('');
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const [errorModalOpen, setErrorModalOpen] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
   const anchorRef = React.useRef(null);
   const itemsPerPage = 6;
-
-  const handleChangePage = (event, newPage) => {
-    setCurrentPage(newPage);
-
-    const startIndex = (newPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-
-    setDisplayedPages(pages.slice(startIndex, endIndex));
-  };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -110,7 +101,7 @@ const Home = () => {
         setErrorMessage(`Invalid url provided!`)
         return;
       }
-      const response = await agent.Crawler.crawl(url)
+      await agent.Crawler.crawl(url)
       fetchData();
     } catch (error) {
       setErrorModalOpen(true);
@@ -126,7 +117,6 @@ const Home = () => {
     try {
       setLoading(true)
       await agent.Crawler.deletePage(pageId);
-      // Fetch updated data after deletion
       fetchData();
     } catch (error) {
       console.error('Error deleting page:', error);
@@ -139,10 +129,19 @@ const Home = () => {
     }
   };
 
+  const handleChangePage = (event, newPage) => {
+    setCurrentPage(newPage);
+
+    const startIndex = (newPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
+    setDisplayedPages(pages.slice(startIndex, endIndex));
+  };
+
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
+    if (prevOpen.current && !open) {
       anchorRef.current.focus();
     }
     prevOpen.current = open;
@@ -213,7 +212,7 @@ const Home = () => {
                   <div className='item-number'>{(currentPage - 1) * itemsPerPage + index + 1}</div>
                   <div className='item-content'>
                     <div className='item-header'>
-                      <p className='secondary-paragraph'>{page.url}</p>
+                      <a className='secondary-paragraph' href={page.url}>{page.url}</a>
                       <ItemHeaderSide
                         date={formatDate(new Date(page.createdAt))}
                         onClick={handleClick}
