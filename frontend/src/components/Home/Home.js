@@ -89,7 +89,7 @@ const Home = () => {
   }, []);
 
   const isValidUrl = (url) => {
-    const urlPattern = /^(https?:\/\/)?([\w-]+\.)+([a-z]{2,})+(\.[a-z]{2,})?(\S+)?$/i;
+    const urlPattern = /^(https?:\/\/)([\w-]+\.)+([a-z]{2,})+(\.[a-z]{2,})?(\S+)?$/i;
     return urlPattern.test(url);
   };
 
